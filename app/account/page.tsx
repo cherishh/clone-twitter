@@ -1,7 +1,5 @@
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
-import AuthButton from './auth-button';
-import AuthForm from './auth-form';
 
 
 export default async function Home() {
@@ -11,8 +9,7 @@ export default async function Home() {
 
   return (
     <div style={{height: '100vh' }}>
-      {/* <AuthButton /> */}
-      <AuthForm />
+      <pre>{JSON.stringify(tweets, null, 4)}</pre>
     </div>
   );
 }

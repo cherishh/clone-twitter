@@ -8,13 +8,13 @@ export default function AuthButton() {
   const [pass, setPass] = useState('');
 
   const handleLogin = async () => {
-    console.log('login');
+    console.log(email, pass, 'login');
     const supabase = createClientComponentClient();
-    await supabase.auth.signInWithPassword({
+    const signedIn = await supabase.auth.signInWithPassword({
       email,
       password: pass
     })
-    
+    console.log(signedIn, 'signedIn');
   }
 
   return (
@@ -23,7 +23,7 @@ export default function AuthButton() {
         <label htmlFor="name">name</label>
         <input id="name" type="text" onChange={(e) =>  { setEmail(e.target.value)}} />
         <label htmlFor="pass">pass</label>
-        <input id="pass" type="password" onChange={(e) =>  { setEmail(e.target.value)}} />
+        <input id="pass" type="password" onChange={(e) =>  { setPass(e.target.value)}} />
         <button onClick={handleLogin}>login</button>
       </form>
     </div>
