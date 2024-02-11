@@ -10,7 +10,7 @@ export default function AuthForm() {
   }
 
   return (
-    <div style={{padding: '36px'}}>
+    <div>
     <Auth
       supabaseClient={supabase}
       view="sign_in"
