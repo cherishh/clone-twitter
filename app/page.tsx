@@ -4,7 +4,7 @@ import AuthButton from './auth-button';
 import AuthForm from './auth-form';
 
 export default async function Home() {
-  // console.log(cookies(), 'cookies');
+  console.log(cookies(), 'cookies');
   const supabase = createServerComponentClient({ cookies });
   const { data: tweets } = await supabase.from('tweets').select();
 
