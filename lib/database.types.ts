@@ -9,6 +9,29 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      profile_new: {
+        Row: {
+          email: string | null
+          id: string
+        }
+        Insert: {
+          email?: string | null
+          id: string
+        }
+        Update: {
+          email?: string | null
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profile_new_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -49,18 +72,29 @@ export type Database = {
           created_at: string
           id: string
           title: string
+          user_id: string
         }
         Insert: {
           created_at?: string
           id?: string
           title: string
+          user_id: string
         }
         Update: {
           created_at?: string
           id?: string
           title?: string
+          user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "tweets_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          }
+        ]
       }
     }
     Views: {
