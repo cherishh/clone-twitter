@@ -32,7 +32,7 @@ export default async function Home() {
       </div>
       <div className='m-8'>
         <NewTweet />
-        <Tweets tweets={tweets} />
+        <Tweets tweets={tweets} user={session.user} />
       </div>
     </div>
   );
