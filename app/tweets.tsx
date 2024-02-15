@@ -5,6 +5,9 @@ import LikeButton from './like';
 import { useOptimistic } from 'react';
 
 export default function Tweets({ tweets, user }: { tweets: TweetWithAuthor[],  user: User }) {
+  console.log((tweets.map((item) => ({
+    likes: item.likes,
+  }))), 'tweets');
   const [optimisticTweets, addOptimisticTweet] = useOptimistic<TweetWithAuthor[], TweetWithAuthor>(
     tweets,
     (currOptimisticTweets, newTweet) => {
@@ -15,7 +18,7 @@ export default function Tweets({ tweets, user }: { tweets: TweetWithAuthor[],  u
     }
   );
 
-  console.log(JSON.parse(JSON.stringify(optimisticTweets[0])), 'render');
+  // console.log(JSON.parse(JSON.stringify(optimisticTweets[0])), 'render');
 
   return optimisticTweets.map((tweet) => (
     <div key={tweet.id} className='m-8'>

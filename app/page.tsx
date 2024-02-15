@@ -24,6 +24,7 @@ export default async function Home() {
     }
   }) ?? []; 
   // console.log(tweets, 'tweets');
+  // console.log('render');
 
   return (
     <div style={{ height: '100%', padding: '60px' }}>
