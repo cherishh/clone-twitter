@@ -1,13 +1,17 @@
 'use client';
 
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import type { User } from '@supabase/auth-helpers-nextjs';
 import LikeButton from './like';
-import { useOptimistic } from 'react';
+import { useEffect, useOptimistic } from 'react';
+import { useRouter } from 'next/navigation';
 
-export default function Tweets({ tweets, user }: { tweets: TweetWithAuthor[],  user: User }) {
-  console.log((tweets.map((item) => ({
-    likes: item.likes,
-  }))), 'tweets');
+export default function Tweets({ tweets, user }: { tweets: TweetWithAuthor[]; user: User }) {
+  // console.log((tweets.map((item) => ({
+  //   likes: item.likes,
+  // }))), 'tweets');
+  const router = useRouter()
+  const supabase = createClientComponentClient<Database>();
   const [optimisticTweets, addOptimisticTweet] = useOptimistic<TweetWithAuthor[], TweetWithAuthor>(
     tweets,
     (currOptimisticTweets, newTweet) => {
@@ -17,6 +21,20 @@ export default function Tweets({ tweets, user }: { tweets: TweetWithAuthor[],  u
       return newOptimisticTweets;
     }
   );
+
+  useEffect(() => {
+    const channel = supabase.channel('realtime tweets').on('postgres_changes', {
+      event: '*',
+      schema: 'public',
+      table: 'tweets'
+    }, (payload) => {
+      router.refresh()
+    }).subscribe(); 
+
+    return () => {
+      channel.unsubscribe();
+    }
+  }, [supabase, router]);
 
   // console.log(JSON.parse(JSON.stringify(optimisticTweets[0])), 'render');
 

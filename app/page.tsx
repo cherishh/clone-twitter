@@ -27,7 +27,7 @@ export default async function Home() {
   // console.log('render');
 
   return (
-    <div style={{ height: '100%', padding: '60px' }}>
+    <div style={{ padding: '60px' }}>
       <div className='m-8'>
         <AuthButtonServer />
       </div>
