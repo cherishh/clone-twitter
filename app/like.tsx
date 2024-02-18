@@ -19,7 +19,6 @@ export default function LikeButton({tweet, addOptimisticTweet, user}: { tweet: T
           user_has_liked_tweet: false,
         })
       })
-      
       await supabase.from('likes').delete().match({'tweet_id': tweet.id, 'user_id': user.id });
       router.refresh();
     } else {

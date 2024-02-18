@@ -1,6 +1,5 @@
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
-import AuthForm from './auth-form';
 import AuthButtonServer from './auth-button-server';
 import { redirect } from 'next/navigation';
 import NewTweet from './new-tweet';
@@ -15,7 +14,9 @@ export default async function Home() {
     redirect('/login');
   }
   const { data } = await supabase.from('tweets').select('*, author: profiles(*), likes(user_id)');
-  const tweets = data?.map((t) => {
+  const tweets = data?.filter((item) => {
+    return item.author?.username !== 'xixi';
+  }).map((t) => {
     return {
       ...t, 
       author: t.author as Profile, 
