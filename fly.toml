@@ -1,0 +1,26 @@
+# fly.toml app configuration file generated for clone-twitter on 2024-02-19T08:45:02+08:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'clone-twitter'
+primary_region = 'nrt'
+
+[build]
+
+[env]
+  NEXT_PUBLIC_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0em1ueHR1ZGJiaXdxeHd1ZW10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDc1NzIyNDcsImV4cCI6MjAyMzE0ODI0N30.sGft-A4SfseLx1P1fIjA-bRZueI6k-xyXnUeXPz1hmo'
+  NEXT_PUBLIC_SUPABASE_URL = 'https://atzmnxtudbbiwqxwuemt.supabase.co'
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
