@@ -13,7 +13,7 @@ export default async function Home() {
   if (!session) {
     redirect('/login');
   }
-  const { data } = await supabase.from('tweets').select('*, author: profiles(*), likes(user_id)');
+  const { data } = await supabase.from('tweets').select('*, author: profiles(*), likes(user_id)').order('created_at', { ascending: false });
   const tweets =
     data?.map((t) => {
       return {

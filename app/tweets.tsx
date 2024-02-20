@@ -6,12 +6,13 @@ import LikeButton from './like';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import useOptimistic from './hooks/useOptimistic';
+import Image from 'next/image';
 
 export default function Tweets({ tweets, user }: { tweets: TweetWithAuthor[]; user: User }) {
   // console.log((tweets.map((item) => ({
   //   likes: item.likes,
   // }))), 'tweets');
-  const router = useRouter()
+  const router = useRouter();
   const supabase = createClientComponentClient<Database>();
   const [optimisticTweets, addOptimisticTweet] = useOptimistic<TweetWithAuthor[], TweetWithAuthor>(
     tweets,
@@ -24,26 +25,38 @@ export default function Tweets({ tweets, user }: { tweets: TweetWithAuthor[]; us
   );
 
   useEffect(() => {
-    const channel = supabase.channel('realtime tweets').on('postgres_changes', {
-      event: '*',
-      schema: 'public',
-      table: 'tweets'
-    }, (payload) => {
-      router.refresh()
-    }).subscribe(); 
+    const channel = supabase
+      .channel('realtime tweets')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'tweets',
+        },
+        (payload) => {
+          router.refresh();
+        }
+      )
+      .subscribe();
 
     return () => {
       channel.unsubscribe();
-    }
+    };
   }, [supabase, router]);
 
   console.log(JSON.parse(JSON.stringify(optimisticTweets[0])), 'render');
 
   return optimisticTweets.map((tweet) => (
-    <div key={tweet.id} className='m-8'>
-      <p>{tweet.author.username}</p>
-      <p>{tweet.title}</p>
-      <LikeButton tweet={tweet} addOptimisticTweet={addOptimisticTweet} user={user} />
+    <div key={tweet.id} className='border border-gray-800 border-t-0 px-4 py-8 flex'>
+      <div className='h-12 w-12'>
+        <Image className='rounded-full' src='/vercel.svg' alt='avatar' width={48} height={48} />
+      </div>
+      <div className='ml-4'>
+        <p><span className=' font-bold'>{tweet.author.username}</span></p>
+        <p>{tweet.title}</p>
+        <LikeButton tweet={tweet} addOptimisticTweet={addOptimisticTweet} user={user} />
+      </div>
     </div>
   ));
 }
